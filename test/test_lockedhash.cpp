@@ -36,6 +36,34 @@ void test_insert(
   }
 }
 
+TEST(LockedHash, operatorIndex) {
+  size_t tot;
+  LockedHash<string, TestClass, TestClassHash, TestClassMakeKey> hash(3);
+  for (int i = 0; i < 10; i++) {
+    hash(TestClass("A" + to_string(i)));
+  }
+
+  ASSERT_EQ(hash["A5"].has_value(), true);
+  ASSERT_EQ(hash["A5"]->name, "A5");
+  ASSERT_EQ(10, hash.size());
+
+  ASSERT_EQ(hash["A5555"].has_value(), false);
+
+  tot = 0;
+  for (auto &v : hash.bucket_elements()) {
+    tot += v;
+  }
+  ASSERT_EQ(tot, hash.size());
+
+  tot = 0;
+  hash.loop([&tot](size_t bucket, TestClass &t) {
+    (void)bucket;
+    (void)t;
+    tot += 1;
+  });
+  ASSERT_EQ(tot, hash.size());
+}
+
 TEST(LockedHash, insertRvalue) {
   size_t tot;
   LockedHash<string, TestClass, TestClassHash, TestClassMakeKey> hash(3);

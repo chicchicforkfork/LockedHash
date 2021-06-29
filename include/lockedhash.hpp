@@ -25,6 +25,7 @@ public:
 
   LockedHashNode() { prev = next = NULL; }
   LockedHashNode(_Tp &tp) : LockedHashNode() { _tp = tp; }
+  LockedHashNode(_Tp &&tp) : LockedHashNode(tp) {}
 };
 
 /**
@@ -117,6 +118,22 @@ public:
    */
   std::optional<_Tp> operator()(_Key key, _Tp &tp) {
     return operator()(key, std::make_optional<_Tp>(tp));
+  }
+
+  std::optional<_Tp> operator[](_Key &&key) {
+    size_t bucket = _get_bucket_index(key);
+    std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(bucket));
+
+    LockedHashNode<_Tp> *c = _buckets[bucket];
+    while (c) {
+      _Key k = _makekey(c->_tp);
+      if (k == key) {
+        return c->_tp;
+      }
+      c = c->next;
+    }
+
+    return std::nullopt;
   }
 
   /**
