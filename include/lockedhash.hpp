@@ -13,20 +13,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-/**
- * @brief LockedHashNode
- *
- * @tparam _Tp Type of Object
- */
-template <typename _Tp> class LockedHashNode {
-public:
-  LockedHashNode *prev, *next;
-  _Tp _tp;
-
-  LockedHashNode() { prev = next = NULL; }
-  LockedHashNode(_Tp &tp) : LockedHashNode() { _tp = tp; }
-  LockedHashNode(_Tp &&tp) : LockedHashNode(tp) {}
-};
+namespace chkchk {
 
 /**
  * @brief LockedHash
@@ -39,12 +26,35 @@ public:
 template <typename _Key, typename _Tp, typename _Hash, typename _MakeKey> //
 class LockedHash {
 private:
+  /**
+   * @brief LockedHashNode
+   *
+   * @tparam _Tp Type of Object
+   */
+  class LockedHashNode {
+  public:
+    LockedHashNode *prev, *next;
+    _Tp _tp;
+
+    LockedHashNode() { prev = next = NULL; }
+    LockedHashNode(_Tp &tp) : LockedHashNode() { _tp = tp; }
+    LockedHashNode(_Tp &&tp) : LockedHashNode(tp) {}
+  };
+
+private:
+  /// bucket locks
   std::recursive_mutex *_bucket_locks;
+  /// element number for each bucket
   std::atomic<size_t> *_bucket_elements;
-  LockedHashNode<_Tp> **_buckets;
+  /// bucket array
+  LockedHashNode **_buckets;
+  /// total elements
   std::atomic<std::size_t> _size;
+  /// fixed bucket size
   size_t _bucket_size;
+  /// hash function
   _Hash _hash;
+  /// make key function
   _MakeKey _makekey;
 
 private:
@@ -60,21 +70,25 @@ private:
     return _bucket_locks[bucket % _bucket_size];
   }
 
-  size_t _get_bucket_index(_Tp &tp) { return (_hash(tp) % _bucket_size); }
+  size_t _get_bucket_index(_Tp &tp) { //
+    return (_hash(tp) % _bucket_size);
+  }
 
-  size_t _get_bucket_index(_Key key) { return (_hash(key) % _bucket_size); }
+  size_t _get_bucket_index(_Key key) { //
+    return (_hash(key) % _bucket_size);
+  }
 
 public:
   /**
    * @brief Construct a new LockedHash<_Key, _Tp, _Hash, _MakeKey> object
    *
-   * @param bucket_size  max bucket size
+   * @param bucket_size  fixed bucket size
    */
   LockedHash<_Key, _Tp, _Hash, _MakeKey>(size_t bucket_size) {
     _bucket_size = bucket_size;
     _bucket_locks = new std::recursive_mutex[_bucket_size];
     _bucket_elements = new std::atomic<size_t>[_bucket_size] { (size_t)0, };
-    _buckets = new LockedHashNode<_Tp> *[_bucket_size] { nullptr, };
+    _buckets = new LockedHashNode *[_bucket_size] { nullptr, };
     _size = 0;
   }
 
@@ -86,7 +100,7 @@ public:
     delete[] _bucket_locks;
     delete[] _bucket_elements;
 
-    LockedHashNode<_Tp> *c, *n;
+    LockedHashNode *c, *n;
     for (size_t i = 0; i < _bucket_size; i++) {
       c = _buckets[i];
       while (c) {
@@ -103,28 +117,41 @@ public:
    *
    * @return size_t
    */
-  size_t size() { return _size.load(); }
+  size_t size() { //
+    return _size.load();
+  }
 
+  /**
+   * @brief search data
+   *
+   * @param key
+   * @return std::optional<_Tp>
+   */
   std::optional<_Tp> operator()(_Key key) {
     return operator()(key, std::nullopt);
   }
 
   /**
-   * @brief LockedHash(key, tp)
+   * @brief search data
    *
    * @param key
-   * @param tp
    * @return std::optional<_Tp>
    */
-  std::optional<_Tp> operator()(_Key key, _Tp &tp) {
-    return operator()(key, std::make_optional<_Tp>(tp));
+  std::optional<_Tp> operator[](_Key &key) { //
+    return operator[](std::move(key));
   }
 
+  /**
+   * @brief search data
+   *
+   * @param key
+   * @return std::optional<_Tp>
+   */
   std::optional<_Tp> operator[](_Key &&key) {
     size_t bucket = _get_bucket_index(key);
     std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(bucket));
 
-    LockedHashNode<_Tp> *c = _buckets[bucket];
+    LockedHashNode *c = _buckets[bucket];
     while (c) {
       _Key k = _makekey(c->_tp);
       if (k == key) {
@@ -137,33 +164,92 @@ public:
   }
 
   /**
-   * @brief LockedHash(key, optional tp)
+   * @brief update data
+   *
+   * @param key
+   * @param interceptor
+   * @return std::optional<_Tp>
+   */
+  std::optional<_Tp> operator()(_Key key, //
+                                std::function<void(_Tp &)> interceptor) {
+    return operator()(key, operator[](key), interceptor);
+  }
+
+  /**
+   * @brief insert data
    *
    * @param key
    * @param tp
    * @return std::optional<_Tp>
    */
-  std::optional<_Tp> operator()(_Key key, std::optional<_Tp> tp) {
-    bool _insert = tp.has_value();
+  std::optional<_Tp> operator()(_Key key, _Tp &tp) {
+    return operator()(key, std::make_optional<_Tp>(tp));
+  }
+
+  /**
+   * @brief insert or update data (Lvalue)
+   *
+   * @param tp
+   * @return std::optional<_Tp>
+   */
+  std::optional<_Tp>
+  operator()(_Tp &tp, //
+             std::function<void(_Tp &)> interceptor = nullptr) {
+    size_t bucket = _get_bucket_index(tp);
+    std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(bucket));
+    return operator()(_makekey(tp), std::make_optional<_Tp>(tp), interceptor);
+  }
+
+  /**
+   * @brief insert or update data (Rvalue)
+   *
+   * @param tp
+   * @return std::optional<_Tp>
+   */
+  std::optional<_Tp>
+  operator()(_Tp &&tp, //
+             std::function<void(_Tp &)> interceptor = nullptr) {
+    size_t bucket = _get_bucket_index(tp);
+    std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(bucket));
+    return operator()(_makekey(tp), std::make_optional<_Tp>(tp), interceptor);
+  }
+
+  /**
+   * @brief insert or update or search
+   *
+   * @param key
+   * @param tp
+   * @return std::optional<_Tp>
+   */
+  std::optional<_Tp>
+  operator()(_Key key,              //
+             std::optional<_Tp> tp, //
+             std::function<void(_Tp &)> interceptor = nullptr) {
+    bool is_insert = tp.has_value();
     size_t bucket = _get_bucket_index(key);
     std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(bucket));
 
-    LockedHashNode<_Tp> *c = _buckets[bucket];
+    LockedHashNode *c = _buckets[bucket];
     while (c) {
       _Key k = _makekey(c->_tp);
       if (k == key) {
-        if (!_insert) {
+        if (!is_insert) {
+          // only search
           return std::make_optional<_Tp>(c->_tp);
+        }
+        if (interceptor) {
+          // update data
+          interceptor(c->_tp);
         }
         return std::nullopt;
       }
       c = c->next;
     }
-    if (!_insert) {
+    if (!is_insert) {
       return std::nullopt;
     }
 
-    c = new LockedHashNode<_Tp>(*tp);
+    c = new LockedHashNode(*tp);
     c->next = _buckets[bucket];
     _buckets[bucket] = c;
     if (c->next) {
@@ -174,30 +260,6 @@ public:
     _size++;
 
     return std::make_optional<_Tp>(c->_tp);
-  }
-
-  /**
-   * @brief LockedHash(tp) Lvalue
-   *
-   * @param tp
-   * @return std::optional<_Tp>
-   */
-  std::optional<_Tp> operator()(_Tp &tp) {
-    size_t bucket = _get_bucket_index(tp);
-    std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(bucket));
-    return operator()(_makekey(tp), std::make_optional<_Tp>(tp));
-  }
-
-  /**
-   * @brief LockedHash(tp) : Rvalue
-   *
-   * @param tp
-   * @return std::optional<_Tp>
-   */
-  std::optional<_Tp> operator()(_Tp &&tp) {
-    size_t bucket = _get_bucket_index(tp);
-    std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(bucket));
-    return operator()(_makekey(tp), std::make_optional<_Tp>(tp));
   }
 
   /**
@@ -228,7 +290,7 @@ public:
   }
 
   /**
-   * @brief rm(tp) - remove Rvalue
+   * @brief remove data for Rvalue
    *
    * @param tp
    * @return std::optional<_Tp>
@@ -240,7 +302,7 @@ public:
   }
 
   /**
-   * @brief rm(key) - remove
+   * @brief remove data for
    *
    * @param key
    * @return std::optional<_Tp>
@@ -250,7 +312,7 @@ public:
     std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(bucket));
     std::optional<_Tp> opt = std::nullopt;
 
-    LockedHashNode<_Tp> *c = _buckets[bucket];
+    LockedHashNode *c = _buckets[bucket];
     while (c) {
       _Key k = _makekey(c->_tp);
       if (k == key) {
@@ -281,7 +343,7 @@ public:
   void loop(std::function<void(size_t bucket, _Tp &tp)> loopf) {
     for (size_t i = 0; i < _bucket_size; i++) {
       std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(i));
-      LockedHashNode<_Tp> *c = _buckets[i];
+      LockedHashNode *c = _buckets[i];
       while (c) {
         loopf(i, c->_tp);
         c = c->next;
@@ -289,5 +351,6 @@ public:
     }
   }
 };
+}; // namespace chkchk
 
 #endif

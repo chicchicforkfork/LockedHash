@@ -7,6 +7,7 @@
 #include <vector>
 
 using namespace std;
+using namespace chkchk;
 
 using PersonKey = pair<string, int>;
 

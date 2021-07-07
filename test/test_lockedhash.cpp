@@ -7,6 +7,7 @@
 #include <vector>
 
 using namespace std;
+using namespace chkchk;
 
 class TestClass {
 public:
@@ -219,6 +220,34 @@ TEST(LockedHash, threadSafe) {
   auto k1 = hash("k_11843");
   ASSERT_EQ(k1.has_value(), true);
   ASSERT_EQ(k1->name, "k_11843");
+}
+
+TEST(LockedHash, inserter_updater) {
+  LockedHash<string, TestClass, TestClassHash, TestClassMakeKey> hash(11);
+
+  for (int i = 0; i < 20; i++) {
+    hash(TestClass("A" + to_string(i)));
+  }
+
+  // update test
+  hash("A1", [](TestClass &t) { t.value = 500; });
+  auto a1 = hash["A1"];
+  ASSERT_EQ(a1->value, 500);
+
+  // update test
+  hash(TestClass("A2"), [](TestClass &t) { t.value = 600; });
+  auto a2 = hash["A2"];
+  ASSERT_EQ(a2->value, 600);
+
+  hash.loop([](size_t bucket, TestClass &t) {
+    (void)bucket;
+    if (t.name == "A1") {
+      ASSERT_EQ(t.value, 500);
+    }
+    if (t.name == "A2") {
+      ASSERT_EQ(t.value, 600);
+    }
+  });
 }
 
 int main(int argc, char **argv) {
