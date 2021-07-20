@@ -190,6 +190,7 @@ public:
    * @brief insert or update data (Lvalue)
    *
    * @param tp
+   * @param interceptor
    * @return std::optional<_Tp>
    */
   std::optional<_Tp>
@@ -204,6 +205,7 @@ public:
    * @brief insert or update data (Rvalue)
    *
    * @param tp
+   * @param interceptor
    * @return std::optional<_Tp>
    */
   std::optional<_Tp>
@@ -219,6 +221,7 @@ public:
    *
    * @param key
    * @param tp
+   * @param interceptor
    * @return std::optional<_Tp>
    */
   std::optional<_Tp>
