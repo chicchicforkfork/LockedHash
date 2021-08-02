@@ -89,7 +89,7 @@ public:
     _bucket_locks = new std::recursive_mutex[_bucket_size];
     _bucket_elements = new std::atomic<size_t>[_bucket_size] { (size_t)0, };
     _buckets = new LockedHashNode *[_bucket_size] { nullptr, };
-    _size = 0;
+    _size = 0; /// atomic
   }
 
   /**
@@ -122,7 +122,7 @@ public:
   }
 
   /**
-   * @brief search data
+   * @brief search data (lvalue)
    *
    * @param key
    * @return std::optional<_Tp>
@@ -132,7 +132,7 @@ public:
   }
 
   /**
-   * @brief search data
+   * @brief search data (lvalue)
    *
    * @param key
    * @return std::optional<_Tp>
@@ -142,7 +142,7 @@ public:
   }
 
   /**
-   * @brief search data
+   * @brief search data (rvalue)
    *
    * @param key
    * @return std::optional<_Tp>
@@ -244,7 +244,8 @@ public:
           // update data
           interceptor(c->_tp);
         }
-        return std::nullopt;
+        // return std::nullopt;
+        return std::make_optional<_Tp>(c->_tp);
       }
       c = c->next;
     }

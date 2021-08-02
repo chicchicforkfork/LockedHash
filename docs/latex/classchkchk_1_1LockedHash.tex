@@ -33,11 +33,11 @@ class \mbox{\hyperlink{classchkchk_1_1LockedHash_1_1LockedHashNode}{Locked\+Hash
 size\+\_\+t \mbox{\hyperlink{classchkchk_1_1LockedHash_a6fde5c7156e54e909781ee3816ff7b44}{size}} ()
 \begin{DoxyCompactList}\small\item\em total element size \end{DoxyCompactList}\item 
 std\+::optional$<$ \+\_\+\+Tp $>$ \mbox{\hyperlink{classchkchk_1_1LockedHash_ad92ef44aa3bd5a7ce878f42fdf71e46f}{operator()}} (\+\_\+\+Key key)
-\begin{DoxyCompactList}\small\item\em search data \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em search data (lvalue) \end{DoxyCompactList}\item 
 std\+::optional$<$ \+\_\+\+Tp $>$ \mbox{\hyperlink{classchkchk_1_1LockedHash_ac57b6a2b66b6e18b6b5418ac03b698a0}{operator\mbox{[}$\,$\mbox{]}}} (\+\_\+\+Key \&key)
-\begin{DoxyCompactList}\small\item\em search data \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em search data (lvalue) \end{DoxyCompactList}\item 
 std\+::optional$<$ \+\_\+\+Tp $>$ \mbox{\hyperlink{classchkchk_1_1LockedHash_a1bc8c9212dcdbc3206221857087dfb0a}{operator\mbox{[}$\,$\mbox{]}}} (\+\_\+\+Key \&\&key)
-\begin{DoxyCompactList}\small\item\em search data \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em search data (rvalue) \end{DoxyCompactList}\item 
 std\+::optional$<$ \+\_\+\+Tp $>$ \mbox{\hyperlink{classchkchk_1_1LockedHash_a2a32af65acbd6d65a2e5b9ce88cbe3fb}{operator()}} (\+\_\+\+Key key, std\+::function$<$ void(\+\_\+\+Tp \&)$>$ interceptor)
 \begin{DoxyCompactList}\small\item\em update data \end{DoxyCompactList}\item 
 std\+::optional$<$ \+\_\+\+Tp $>$ \mbox{\hyperlink{classchkchk_1_1LockedHash_a14e6cf60d2ac72a41abb82b35d003a03}{operator()}} (\+\_\+\+Key key, \+\_\+\+Tp \&tp)
@@ -130,7 +130,7 @@ Construct a new Locked\+Hash$<$\+\_\+\+Key, \+\_\+\+Tp, \+\_\+\+Hash, \+\_\+\+Ma
 {\em bucket\+\_\+size} & fixed bucket size \\
 \hline
 \end{DoxyParams}
-
+atomic
 
 lockedhash.\+hpp 파일의 87 번째 라인에서 정의되었습니다.
 
@@ -223,7 +223,7 @@ std\+::vector$<$size\+\_\+t$>$
 \end{DoxyReturn}
 
 
-lockedhash.\+hpp 파일의 270 번째 라인에서 정의되었습니다.
+lockedhash.\+hpp 파일의 274 번째 라인에서 정의되었습니다.
 
 \mbox{\Hypertarget{classchkchk_1_1LockedHash_ae1148c106da571353d8d48c7928c5dc6}\label{classchkchk_1_1LockedHash_ae1148c106da571353d8d48c7928c5dc6}} 
 \index{chkchk::LockedHash$<$ \_Key, \_Tp, \_Hash, \_MakeKey $>$@{chkchk::LockedHash$<$ \_Key, \_Tp, \_Hash, \_MakeKey $>$}!loop@{loop}}
@@ -243,7 +243,7 @@ loop(lambda loop function)
 \end{DoxyParams}
 
 
-lockedhash.\+hpp 파일의 343 번째 라인에서 정의되었습니다.
+lockedhash.\+hpp 파일의 347 번째 라인에서 정의되었습니다.
 
 \mbox{\Hypertarget{classchkchk_1_1LockedHash_ad92ef44aa3bd5a7ce878f42fdf71e46f}\label{classchkchk_1_1LockedHash_ad92ef44aa3bd5a7ce878f42fdf71e46f}} 
 \index{chkchk::LockedHash$<$ \_Key, \_Tp, \_Hash, \_MakeKey $>$@{chkchk::LockedHash$<$ \_Key, \_Tp, \_Hash, \_MakeKey $>$}!operator()@{operator()}}
@@ -254,7 +254,7 @@ std\+::optional$<$\+\_\+\+Tp$>$ \mbox{\hyperlink{classchkchk_1_1LockedHash}{chkc
 
 
 
-search data 
+search data (lvalue) 
 
 
 \begin{DoxyParams}{매개변수}
@@ -335,13 +335,15 @@ insert or update or search
 \hline
 {\em tp} & \\
 \hline
+{\em interceptor} & \\
+\hline
 \end{DoxyParams}
 \begin{DoxyReturn}{반환값}
 std\+::optional$<$\+\_\+\+Tp$>$ 
 \end{DoxyReturn}
 
 
-lockedhash.\+hpp 파일의 225 번째 라인에서 정의되었습니다.
+lockedhash.\+hpp 파일의 228 번째 라인에서 정의되었습니다.
 
 \mbox{\Hypertarget{classchkchk_1_1LockedHash_a9361f57d3f2dadfdd5045871d94b4240}\label{classchkchk_1_1LockedHash_a9361f57d3f2dadfdd5045871d94b4240}} 
 \index{chkchk::LockedHash$<$ \_Key, \_Tp, \_Hash, \_MakeKey $>$@{chkchk::LockedHash$<$ \_Key, \_Tp, \_Hash, \_MakeKey $>$}!operator()@{operator()}}
@@ -358,13 +360,15 @@ insert or update data (Rvalue)
 \begin{DoxyParams}{매개변수}
 {\em tp} & \\
 \hline
+{\em interceptor} & \\
+\hline
 \end{DoxyParams}
 \begin{DoxyReturn}{반환값}
 std\+::optional$<$\+\_\+\+Tp$>$ 
 \end{DoxyReturn}
 
 
-lockedhash.\+hpp 파일의 210 번째 라인에서 정의되었습니다.
+lockedhash.\+hpp 파일의 212 번째 라인에서 정의되었습니다.
 
 \mbox{\Hypertarget{classchkchk_1_1LockedHash_a5e938ace53c48ad34629a68aa648f0b4}\label{classchkchk_1_1LockedHash_a5e938ace53c48ad34629a68aa648f0b4}} 
 \index{chkchk::LockedHash$<$ \_Key, \_Tp, \_Hash, \_MakeKey $>$@{chkchk::LockedHash$<$ \_Key, \_Tp, \_Hash, \_MakeKey $>$}!operator()@{operator()}}
@@ -381,13 +385,15 @@ insert or update data (Lvalue)
 \begin{DoxyParams}{매개변수}
 {\em tp} & \\
 \hline
+{\em interceptor} & \\
+\hline
 \end{DoxyParams}
 \begin{DoxyReturn}{반환값}
 std\+::optional$<$\+\_\+\+Tp$>$ 
 \end{DoxyReturn}
 
 
-lockedhash.\+hpp 파일의 196 번째 라인에서 정의되었습니다.
+lockedhash.\+hpp 파일의 197 번째 라인에서 정의되었습니다.
 
 \mbox{\Hypertarget{classchkchk_1_1LockedHash_a1bc8c9212dcdbc3206221857087dfb0a}\label{classchkchk_1_1LockedHash_a1bc8c9212dcdbc3206221857087dfb0a}} 
 \index{chkchk::LockedHash$<$ \_Key, \_Tp, \_Hash, \_MakeKey $>$@{chkchk::LockedHash$<$ \_Key, \_Tp, \_Hash, \_MakeKey $>$}!operator\mbox{[}\mbox{]}@{operator[]}}
@@ -398,7 +404,7 @@ std\+::optional$<$\+\_\+\+Tp$>$ \mbox{\hyperlink{classchkchk_1_1LockedHash}{chkc
 
 
 
-search data 
+search data (rvalue) 
 
 
 \begin{DoxyParams}{매개변수}
@@ -421,7 +427,7 @@ std\+::optional$<$\+\_\+\+Tp$>$ \mbox{\hyperlink{classchkchk_1_1LockedHash}{chkc
 
 
 
-search data 
+search data (lvalue) 
 
 
 \begin{DoxyParams}{매개변수}
@@ -456,7 +462,7 @@ std\+::optional$<$\+\_\+\+Tp$>$
 \end{DoxyReturn}
 
 
-lockedhash.\+hpp 파일의 310 번째 라인에서 정의되었습니다.
+lockedhash.\+hpp 파일의 314 번째 라인에서 정의되었습니다.
 
 \mbox{\Hypertarget{classchkchk_1_1LockedHash_acc047fcf1d6f809f53eaf855826b8865}\label{classchkchk_1_1LockedHash_acc047fcf1d6f809f53eaf855826b8865}} 
 \index{chkchk::LockedHash$<$ \_Key, \_Tp, \_Hash, \_MakeKey $>$@{chkchk::LockedHash$<$ \_Key, \_Tp, \_Hash, \_MakeKey $>$}!rm@{rm}}
@@ -479,7 +485,7 @@ std\+::optional$<$\+\_\+\+Tp$>$
 \end{DoxyReturn}
 
 
-lockedhash.\+hpp 파일의 298 번째 라인에서 정의되었습니다.
+lockedhash.\+hpp 파일의 302 번째 라인에서 정의되었습니다.
 
 \mbox{\Hypertarget{classchkchk_1_1LockedHash_a42a7f409386c3495915b455ce0aa27ec}\label{classchkchk_1_1LockedHash_a42a7f409386c3495915b455ce0aa27ec}} 
 \index{chkchk::LockedHash$<$ \_Key, \_Tp, \_Hash, \_MakeKey $>$@{chkchk::LockedHash$<$ \_Key, \_Tp, \_Hash, \_MakeKey $>$}!rm@{rm}}
@@ -502,7 +508,7 @@ std\+::optional$<$\+\_\+\+Tp$>$
 \end{DoxyReturn}
 
 
-lockedhash.\+hpp 파일의 286 번째 라인에서 정의되었습니다.
+lockedhash.\+hpp 파일의 290 번째 라인에서 정의되었습니다.
 
 \mbox{\Hypertarget{classchkchk_1_1LockedHash_a6fde5c7156e54e909781ee3816ff7b44}\label{classchkchk_1_1LockedHash_a6fde5c7156e54e909781ee3816ff7b44}} 
 \index{chkchk::LockedHash$<$ \_Key, \_Tp, \_Hash, \_MakeKey $>$@{chkchk::LockedHash$<$ \_Key, \_Tp, \_Hash, \_MakeKey $>$}!size@{size}}
