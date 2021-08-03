@@ -354,6 +354,40 @@ public:
       }
     }
   }
+
+  /**
+   * @brief loop_with_delete(lambda loop function)
+   * loopf 결과가 true인 경우 Node를 제거한다.
+   *
+   * @param loopf
+   */
+  void loop_with_delete(std::function<bool(size_t bucket, _Tp &tp)> loopf) {
+    for (size_t i = 0; i < _bucket_size; i++) {
+      std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(i));
+      LockedHashNode *c = _buckets[i];
+      LockedHashNode *tmp;
+      while (c) {
+        if (loopf(i, c->_tp)) {
+          tmp = c->next;
+          if (c == _buckets[i]) {
+            _buckets[i] = c->next;
+          } else {
+            c->prev->next = c->next;
+          }
+          if (c->next) {
+            c->next->prev = c->prev;
+          }
+          _size--;
+          _bucket_elements[i]--;
+          delete c;
+
+          c = tmp;
+        } else {
+          c = c->next;
+        }
+      }
+    }
+  }
 };
 }; // namespace chkchk
 

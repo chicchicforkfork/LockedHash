@@ -146,6 +146,9 @@ Public 멤버 함수</h2></td></tr>
 <tr class="memitem:ae1148c106da571353d8d48c7928c5dc6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchkchk_1_1LockedHash.html#ae1148c106da571353d8d48c7928c5dc6">loop</a> (std::function&lt; void(size_t bucket, _Tp &amp;tp)&gt; loopf)</td></tr>
 <tr class="memdesc:ae1148c106da571353d8d48c7928c5dc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">loop(lambda loop function)  <a href="classchkchk_1_1LockedHash.html#ae1148c106da571353d8d48c7928c5dc6">더 자세히 ...</a><br /></td></tr>
 <tr class="separator:ae1148c106da571353d8d48c7928c5dc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e67fe623264ad00b1ea5cca446aee28"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchkchk_1_1LockedHash.html#a9e67fe623264ad00b1ea5cca446aee28">loop_with_delete</a> (std::function&lt; bool(size_t bucket, _Tp &amp;tp)&gt; loopf)</td></tr>
+<tr class="memdesc:a9e67fe623264ad00b1ea5cca446aee28"><td class="mdescLeft">&#160;</td><td class="mdescRight">loop_with_delete(lambda loop function) loopf 결과가 true인 경우 Node를 제거한다.  <a href="classchkchk_1_1LockedHash.html#a9e67fe623264ad00b1ea5cca446aee28">더 자세히 ...</a><br /></td></tr>
+<tr class="separator:a9e67fe623264ad00b1ea5cca446aee28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private 멤버 함수</h2></td></tr>
@@ -489,6 +492,44 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 </dl>
 
 <p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00347">347</a> 번째 라인에서 정의되었습니다.</p>
+
+</div>
+</div>
+<a id="a9e67fe623264ad00b1ea5cca446aee28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e67fe623264ad00b1ea5cca446aee28">&#9670;&nbsp;</a></span>loop_with_delete()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classchkchk_1_1LockedHash.html">chkchk::LockedHash</a>&lt; _Key, _Tp, _Hash, _MakeKey &gt;::loop_with_delete </td>
+          <td>(</td>
+          <td class="paramtype">std::function&lt; bool(size_t bucket, _Tp &amp;tp)&gt;&#160;</td>
+          <td class="paramname"><em>loopf</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>loop_with_delete(lambda loop function) loopf 결과가 true인 경우 Node를 제거한다. </p>
+<dl class="params"><dt>매개변수</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">loopf</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00364">364</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>

@@ -57,7 +57,9 @@ std\+::optional$<$ \+\_\+\+Tp $>$ \mbox{\hyperlink{classchkchk_1_1LockedHash_acc
 std\+::optional$<$ \+\_\+\+Tp $>$ \mbox{\hyperlink{classchkchk_1_1LockedHash_a84e6a45e02642165af76428748378bd1}{rm}} (\+\_\+\+Key key)
 \begin{DoxyCompactList}\small\item\em remove data for \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{classchkchk_1_1LockedHash_ae1148c106da571353d8d48c7928c5dc6}{loop}} (std\+::function$<$ void(size\+\_\+t bucket, \+\_\+\+Tp \&tp)$>$ loopf)
-\begin{DoxyCompactList}\small\item\em loop(lambda loop function) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em loop(lambda loop function) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classchkchk_1_1LockedHash_a9e67fe623264ad00b1ea5cca446aee28}{loop\+\_\+with\+\_\+delete}} (std\+::function$<$ bool(size\+\_\+t bucket, \+\_\+\+Tp \&tp)$>$ loopf)
+\begin{DoxyCompactList}\small\item\em loop\+\_\+with\+\_\+delete(lambda loop function) loopf 결과가 true인 경우 Node를 제거한다. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Private 멤버 함수}
 \begin{DoxyCompactItemize}
 \item 
@@ -244,6 +246,26 @@ loop(lambda loop function)
 
 
 lockedhash.\+hpp 파일의 347 번째 라인에서 정의되었습니다.
+
+\mbox{\Hypertarget{classchkchk_1_1LockedHash_a9e67fe623264ad00b1ea5cca446aee28}\label{classchkchk_1_1LockedHash_a9e67fe623264ad00b1ea5cca446aee28}} 
+\index{chkchk::LockedHash$<$ \_Key, \_Tp, \_Hash, \_MakeKey $>$@{chkchk::LockedHash$<$ \_Key, \_Tp, \_Hash, \_MakeKey $>$}!loop\_with\_delete@{loop\_with\_delete}}
+\index{loop\_with\_delete@{loop\_with\_delete}!chkchk::LockedHash$<$ \_Key, \_Tp, \_Hash, \_MakeKey $>$@{chkchk::LockedHash$<$ \_Key, \_Tp, \_Hash, \_MakeKey $>$}}
+\doxysubsubsection{\texorpdfstring{loop\_with\_delete()}{loop\_with\_delete()}}
+{\footnotesize\ttfamily template$<$typename \+\_\+\+Key , typename \+\_\+\+Tp , typename \+\_\+\+Hash , typename \+\_\+\+Make\+Key $>$ \\
+void \mbox{\hyperlink{classchkchk_1_1LockedHash}{chkchk\+::\+Locked\+Hash}}$<$ \+\_\+\+Key, \+\_\+\+Tp, \+\_\+\+Hash, \+\_\+\+Make\+Key $>$\+::loop\+\_\+with\+\_\+delete (\begin{DoxyParamCaption}\item[{std\+::function$<$ bool(size\+\_\+t bucket, \+\_\+\+Tp \&tp)$>$}]{loopf }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+loop\+\_\+with\+\_\+delete(lambda loop function) loopf 결과가 true인 경우 Node를 제거한다. 
+
+
+\begin{DoxyParams}{매개변수}
+{\em loopf} & \\
+\hline
+\end{DoxyParams}
+
+
+lockedhash.\+hpp 파일의 364 번째 라인에서 정의되었습니다.
 
 \mbox{\Hypertarget{classchkchk_1_1LockedHash_ad92ef44aa3bd5a7ce878f42fdf71e46f}\label{classchkchk_1_1LockedHash_ad92ef44aa3bd5a7ce878f42fdf71e46f}} 
 \index{chkchk::LockedHash$<$ \_Key, \_Tp, \_Hash, \_MakeKey $>$@{chkchk::LockedHash$<$ \_Key, \_Tp, \_Hash, \_MakeKey $>$}!operator()@{operator()}}
