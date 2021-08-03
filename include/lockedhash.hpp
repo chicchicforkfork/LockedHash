@@ -8,6 +8,7 @@
 #include <iostream>
 #include <mutex>
 #include <optional>
+#include <vector>
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
