@@ -12,13 +12,15 @@ using namespace chkchk;
 int main(int argc, char **argv) {
   (void)argc;
   (void)argv;
-  LockedHash<PersonKey, Person, PersonHash, PersonMakeKey> hash(100, 60);
+  LockedHash<PersonKey, Person, PersonHash, PersonMakeKey> hash(100, 1);
 
   for (int i = 1; i <= 10000; i++) {
     hash(Person("P" + to_string(i), i));
   }
 
   cout << "total size: " << hash.size() << endl;
+
+  std::this_thread::sleep_for(5s);
 
   cout << "update P500" << endl;
   {
@@ -34,5 +36,11 @@ int main(int argc, char **argv) {
     } else {
       cout << "not found P500" << endl;
     }
+  }
+
+  {
+    auto expired = hash.expire();
+    if (expired)
+      cout << "Expire nodes : " << (*expired).size() << '\n';
   }
 }
