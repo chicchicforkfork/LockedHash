@@ -64,7 +64,7 @@ private:
   }
 
   std::recursive_mutex &_get_bucket_lock(_Tp &tp) {
-    return _bucket_locks[_hash(tp) % _bucket_size];
+    return _get_bucket_lock(_makekey(tp));
   }
 
   std::recursive_mutex &_get_bucket_lock(size_t bucket) {
@@ -72,7 +72,7 @@ private:
   }
 
   size_t _get_bucket_index(_Tp &tp) { //
-    return (_hash(tp) % _bucket_size);
+    return _get_bucket_index(_makekey(tp));
   }
 
   size_t _get_bucket_index(_Key key) { //
