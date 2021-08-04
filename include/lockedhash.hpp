@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 namespace chkchk {
 
@@ -36,6 +37,7 @@ private:
   public:
     LockedHashNode *prev, *next;
     _Tp _tp;
+    time_t _timestamp = time(nullptr);
 
     LockedHashNode() { prev = next = NULL; }
     LockedHashNode(_Tp &tp) : LockedHashNode() { _tp = tp; }
@@ -244,6 +246,7 @@ public:
         if (interceptor) {
           // update data
           interceptor(c->_tp);
+          c->_timestamp = time(nullptr);
         }
         // return std::nullopt;
         return std::make_optional<_Tp>(c->_tp);
@@ -342,15 +345,19 @@ public:
 
   /**
    * @brief loop(lambda loop function)
+   * loopf 결과가 true인 경우 Node의 timestamp를 업데이트 한다.
    *
    * @param loopf
    */
-  void loop(std::function<void(size_t bucket, _Tp &tp)> loopf) {
+  void loop(std::function<bool(size_t bucket, _Tp &tp)> loopf) {
     for (size_t i = 0; i < _bucket_size; i++) {
       std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(i));
       LockedHashNode *c = _buckets[i];
       while (c) {
-        loopf(i, c->_tp);
+        auto update_timestamp = loopf(i, c->_tp);
+        if (update_timestamp) {
+          c->_timestamp = time(nullptr);
+        }
         c = c->next;
       }
     }

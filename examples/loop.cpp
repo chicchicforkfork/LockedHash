@@ -5,6 +5,7 @@
 #include <thread>
 #include <unistd.h>
 #include <vector>
+#include <optional>
 
 using namespace std;
 using namespace chkchk;
@@ -22,6 +23,7 @@ int main(int argc, char **argv) {
     (void)bucket;
     (void)p;
     tot++;
+    return false;
   });
   cout << "total size: " << hash1.size() << endl;
 

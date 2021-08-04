@@ -21,6 +21,7 @@ int main(int argc, char **argv) {
   hash.loop([](size_t bucket, Person &p) {
     (void)bucket;
     cout << p.to_string() << "\n";
+    return false;
   });
 
   cout << "\nafter lis\n";
@@ -33,5 +34,6 @@ int main(int argc, char **argv) {
   hash.loop([](size_t bucket, Person &p) {
     (void)bucket;
     cout << p.to_string() << "\n";
+    return false;
   });
 }
