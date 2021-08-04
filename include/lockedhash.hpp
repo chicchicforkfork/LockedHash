@@ -404,6 +404,10 @@ public:
 
   /**
    * @brief expire_time 이상 업데이트 되지 않은 Node를 삭제한다.
+   * expire_time이 0일 경우, 동작하지 않음.
+   *
+   * @return std::optional<std::list<_Tp>> 삭제된 내용이 있으면 list, 없으면
+   * std::nullopt를 반환.
    */
   std::optional<std::list<_Tp>> expire() {
     assert(_expire_time != 0);
