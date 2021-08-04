@@ -6,14 +6,15 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
+#include <list>
 #include <mutex>
 #include <optional>
-#include <vector>
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <vector>
 
 namespace chkchk {
 
@@ -60,6 +61,8 @@ private:
   /// make key function
   _MakeKey _makekey;
 
+  time_t _expire_time = 0;
+
 private:
   std::recursive_mutex &_get_bucket_lock(_Key key) {
     return _bucket_locks[_hash(key) % _bucket_size];
@@ -87,12 +90,14 @@ public:
    *
    * @param bucket_size  fixed bucket size
    */
-  LockedHash<_Key, _Tp, _Hash, _MakeKey>(size_t bucket_size) {
+  LockedHash<_Key, _Tp, _Hash, _MakeKey>(size_t bucket_size,
+                                         time_t expire_time) {
     _bucket_size = bucket_size;
     _bucket_locks = new std::recursive_mutex[_bucket_size];
     _bucket_elements = new std::atomic<size_t>[_bucket_size] { (size_t)0, };
     _buckets = new LockedHashNode *[_bucket_size] { nullptr, };
     _size = 0; /// atomic
+    _expire_time = expire_time;
   }
 
   /**
@@ -396,7 +401,47 @@ public:
       }
     }
   }
+
+  /**
+   * @brief expire_time 이상 업데이트 되지 않은 Node를 삭제한다.
+   */
+  std::optional<std::list<_Tp>> expire() {
+    std::list<_Tp> expired;
+
+    time_t now = time(nullptr);
+    for (size_t i = 0; i < _bucket_size; i++) {
+      std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(i));
+      LockedHashNode *c = _buckets[i];
+      LockedHashNode *tmp;
+
+      while (c) {
+        if (now - c->_timestamp > _expire_time) {
+          tmp = c->next;
+          if (c == _buckets[i]) {
+            _buckets[i] = c->next;
+          } else {
+            c->prev->next = c->next;
+          }
+          if (c->next) {
+            c->next->prev = c->prev;
+          }
+          _size--;
+          _bucket_elements[i]--;
+
+          expired.push_back(c->_tp);
+          delete c;
+
+          c = tmp;
+        } else {
+          c = c->next;
+        }
+      }
+    }
+
+    return expired.empty() ? std::nullopt : make_optional(expired);
+  }
 };
+
 }; // namespace chkchk
 
 #endif
