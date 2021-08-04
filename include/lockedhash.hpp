@@ -406,6 +406,7 @@ public:
    * @brief expire_time 이상 업데이트 되지 않은 Node를 삭제한다.
    */
   std::optional<std::list<_Tp>> expire() {
+    assert(_expire_time != 0);
     std::list<_Tp> expired;
 
     time_t now = time(nullptr);
