@@ -5,6 +5,7 @@
 #include <thread>
 #include <unistd.h>
 #include <vector>
+#include <optional>
 
 using namespace std;
 using namespace chkchk;
@@ -13,7 +14,7 @@ int main(int argc, char **argv) {
   (void)argc;
   (void)argv;
 
-  LockedHash<PersonKey, Person, PersonHash, PersonMakeKey> hash1(100);
+  LockedHash<PersonKey, Person, PersonHash, PersonMakeKey> hash1(100, 60);
   for (int i = 1; i <= 100; i++) {
     hash1(Person("P" + to_string(i), i));
   }
@@ -22,10 +23,11 @@ int main(int argc, char **argv) {
     (void)bucket;
     (void)p;
     tot++;
+    return false;
   });
   cout << "total size: " << hash1.size() << endl;
 
-  LockedHash<PersonKey, Person, PersonHash, PersonMakeKey> hash2(100);
+  LockedHash<PersonKey, Person, PersonHash, PersonMakeKey> hash2(100, 60);
   for (int i = 1; i <= 100; i++) {
     hash2(Person("P" + to_string(i), i));
   }
@@ -36,7 +38,7 @@ int main(int argc, char **argv) {
   });
   cout << "total size: " << hash2.size() << endl;
 
-  LockedHash<PersonKey, Person, PersonHash, PersonMakeKey> hash3(100);
+  LockedHash<PersonKey, Person, PersonHash, PersonMakeKey> hash3(100, 60);
   for (int i = 1; i <= 100; i++) {
     hash3(Person("P" + to_string(i), i));
   }

@@ -12,7 +12,7 @@ using namespace chkchk;
 int main(int argc, char **argv) {
   (void)argc;
   (void)argv;
-  LockedHash<PersonKey, Person, PersonHash, PersonMakeKey> hash(100);
+  LockedHash<PersonKey, Person, PersonHash, PersonMakeKey> hash(100, 60);
 
   for (int i = 1; i <= 10000; i++) {
     hash(Person("P" + to_string(i), i));

@@ -6,13 +6,15 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
+#include <list>
 #include <mutex>
 #include <optional>
-#include <vector>
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+#include <vector>
 
 namespace chkchk {
 
@@ -36,6 +38,7 @@ private:
   public:
     LockedHashNode *prev, *next;
     _Tp _tp;
+    time_t _timestamp = time(nullptr);
 
     LockedHashNode() { prev = next = NULL; }
     LockedHashNode(_Tp &tp) : LockedHashNode() { _tp = tp; }
@@ -57,6 +60,8 @@ private:
   _Hash _hash;
   /// make key function
   _MakeKey _makekey;
+
+  time_t _expire_time = 0;
 
 private:
   std::recursive_mutex &_get_bucket_lock(_Key key) {
@@ -85,12 +90,14 @@ public:
    *
    * @param bucket_size  fixed bucket size
    */
-  LockedHash<_Key, _Tp, _Hash, _MakeKey>(size_t bucket_size) {
+  LockedHash<_Key, _Tp, _Hash, _MakeKey>(size_t bucket_size,
+                                         time_t expire_time) {
     _bucket_size = bucket_size;
     _bucket_locks = new std::recursive_mutex[_bucket_size];
     _bucket_elements = new std::atomic<size_t>[_bucket_size] { (size_t)0, };
     _buckets = new LockedHashNode *[_bucket_size] { nullptr, };
     _size = 0; /// atomic
+    _expire_time = expire_time;
   }
 
   /**
@@ -244,6 +251,7 @@ public:
         if (interceptor) {
           // update data
           interceptor(c->_tp);
+          c->_timestamp = time(nullptr);
         }
         // return std::nullopt;
         return std::make_optional<_Tp>(c->_tp);
@@ -342,15 +350,19 @@ public:
 
   /**
    * @brief loop(lambda loop function)
+   * loopf 결과가 true인 경우 Node의 timestamp를 업데이트 한다.
    *
    * @param loopf
    */
-  void loop(std::function<void(size_t bucket, _Tp &tp)> loopf) {
+  void loop(std::function<bool(size_t bucket, _Tp &tp)> loopf) {
     for (size_t i = 0; i < _bucket_size; i++) {
       std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(i));
       LockedHashNode *c = _buckets[i];
       while (c) {
-        loopf(i, c->_tp);
+        auto update_timestamp = loopf(i, c->_tp);
+        if (update_timestamp) {
+          c->_timestamp = time(nullptr);
+        }
         c = c->next;
       }
     }
@@ -389,7 +401,52 @@ public:
       }
     }
   }
+
+  /**
+   * @brief expire_time 이상 업데이트 되지 않은 Node를 삭제한다.
+   * expire_time이 0일 경우, 동작하지 않음.
+   *
+   * @return std::optional<std::list<_Tp>> 삭제된 내용이 있으면 list, 없으면
+   * std::nullopt를 반환.
+   */
+  std::optional<std::list<_Tp>> expire() {
+    assert(_expire_time != 0);
+    std::list<_Tp> expired;
+
+    time_t now = time(nullptr);
+    for (size_t i = 0; i < _bucket_size; i++) {
+      std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(i));
+      LockedHashNode *c = _buckets[i];
+      LockedHashNode *tmp;
+
+      while (c) {
+        if (now - c->_timestamp > _expire_time) {
+          tmp = c->next;
+          if (c == _buckets[i]) {
+            _buckets[i] = c->next;
+          } else {
+            c->prev->next = c->next;
+          }
+          if (c->next) {
+            c->next->prev = c->prev;
+          }
+          _size--;
+          _bucket_elements[i]--;
+
+          expired.push_back(c->_tp);
+          delete c;
+
+          c = tmp;
+        } else {
+          c = c->next;
+        }
+      }
+    }
+
+    return expired.empty() ? std::nullopt : make_optional(expired);
+  }
 };
+
 }; // namespace chkchk
 
 #endif
