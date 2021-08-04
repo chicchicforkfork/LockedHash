@@ -8,3 +8,6 @@ add_executable(update
 add_executable(loop
     loop.cpp
 )
+add_executable(insert
+    insert.cpp
+)
