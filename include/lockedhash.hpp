@@ -155,20 +155,8 @@ public:
    * @param key
    * @return std::optional<_Tp>
    */
-  std::optional<_Tp> operator[](_Key &&key) {
-    size_t bucket = _get_bucket_index(key);
-    std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(bucket));
-
-    LockedHashNode *c = _buckets[bucket];
-    while (c) {
-      _Key k = _makekey(c->_tp);
-      if (k == key) {
-        return c->_tp;
-      }
-      c = c->next;
-    }
-
-    return std::nullopt;
+  std::optional<_Tp> operator[](_Key &&key) { //
+    return operator()(key);
   }
 
   /**
@@ -204,8 +192,6 @@ public:
   std::optional<_Tp>
   operator()(_Tp &tp, //
              std::function<void(_Tp &)> interceptor = nullptr) {
-    size_t bucket = _get_bucket_index(tp);
-    std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(bucket));
     return operator()(_makekey(tp), std::make_optional<_Tp>(tp), interceptor);
   }
 
@@ -219,8 +205,6 @@ public:
   std::optional<_Tp>
   operator()(_Tp &&tp, //
              std::function<void(_Tp &)> interceptor = nullptr) {
-    size_t bucket = _get_bucket_index(tp);
-    std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(bucket));
     return operator()(_makekey(tp), std::make_optional<_Tp>(tp), interceptor);
   }
 
@@ -296,9 +280,7 @@ public:
    * @param tp
    * @return std::optional<_Tp>
    */
-  std::optional<_Tp> rm(_Tp &tp) {
-    size_t bucket = _get_bucket_index(tp);
-    std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(bucket));
+  std::optional<_Tp> rm(_Tp &tp) { //
     return rm(_makekey(tp));
   }
 
@@ -308,9 +290,7 @@ public:
    * @param tp
    * @return std::optional<_Tp>
    */
-  std::optional<_Tp> rm(_Tp &&tp) {
-    size_t bucket = _get_bucket_index(tp);
-    std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(bucket));
+  std::optional<_Tp> rm(_Tp &&tp) { //
     return rm(_makekey(tp));
   }
 

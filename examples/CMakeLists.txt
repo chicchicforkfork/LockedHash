@@ -11,3 +11,6 @@ add_executable(loop
 add_executable(insert
     insert.cpp
 )
+add_executable(expire
+    expire.cpp
+)

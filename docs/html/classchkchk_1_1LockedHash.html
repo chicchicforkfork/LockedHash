@@ -98,9 +98,9 @@ chkchk::LockedHash&lt; _Key, _Tp, _Hash, _MakeKey &gt;에 대한 협력 다이�
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public 멤버 함수</h2></td></tr>
-<tr class="memitem:ae06e7fefde1945cad524e6f8591a752d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchkchk_1_1LockedHash.html#ae06e7fefde1945cad524e6f8591a752d">LockedHash</a> (size_t bucket_size)</td></tr>
-<tr class="memdesc:ae06e7fefde1945cad524e6f8591a752d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new LockedHash&lt;_Key, _Tp, _Hash, _MakeKey&gt; object  <a href="classchkchk_1_1LockedHash.html#ae06e7fefde1945cad524e6f8591a752d">더 자세히 ...</a><br /></td></tr>
-<tr class="separator:ae06e7fefde1945cad524e6f8591a752d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a830b04453ee4acc432f35b27749af4a1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchkchk_1_1LockedHash.html#a830b04453ee4acc432f35b27749af4a1">LockedHash</a> (size_t bucket_size, time_t expire_time)</td></tr>
+<tr class="memdesc:a830b04453ee4acc432f35b27749af4a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a new LockedHash&lt;_Key, _Tp, _Hash, _MakeKey&gt; object  <a href="classchkchk_1_1LockedHash.html#a830b04453ee4acc432f35b27749af4a1">더 자세히 ...</a><br /></td></tr>
+<tr class="separator:a830b04453ee4acc432f35b27749af4a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1dde23081353f176f43c37791df41f9c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchkchk_1_1LockedHash.html#a1dde23081353f176f43c37791df41f9c">~LockedHash</a> ()</td></tr>
 <tr class="memdesc:a1dde23081353f176f43c37791df41f9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the Locked Hash object  <a href="classchkchk_1_1LockedHash.html#a1dde23081353f176f43c37791df41f9c">더 자세히 ...</a><br /></td></tr>
 <tr class="separator:a1dde23081353f176f43c37791df41f9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -143,12 +143,15 @@ Public 멤버 함수</h2></td></tr>
 <tr class="memitem:a84e6a45e02642165af76428748378bd1"><td class="memItemLeft" align="right" valign="top">std::optional&lt; _Tp &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchkchk_1_1LockedHash.html#a84e6a45e02642165af76428748378bd1">rm</a> (_Key key)</td></tr>
 <tr class="memdesc:a84e6a45e02642165af76428748378bd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">remove data for  <a href="classchkchk_1_1LockedHash.html#a84e6a45e02642165af76428748378bd1">더 자세히 ...</a><br /></td></tr>
 <tr class="separator:a84e6a45e02642165af76428748378bd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1148c106da571353d8d48c7928c5dc6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchkchk_1_1LockedHash.html#ae1148c106da571353d8d48c7928c5dc6">loop</a> (std::function&lt; void(size_t bucket, _Tp &amp;tp)&gt; loopf)</td></tr>
-<tr class="memdesc:ae1148c106da571353d8d48c7928c5dc6"><td class="mdescLeft">&#160;</td><td class="mdescRight">loop(lambda loop function)  <a href="classchkchk_1_1LockedHash.html#ae1148c106da571353d8d48c7928c5dc6">더 자세히 ...</a><br /></td></tr>
-<tr class="separator:ae1148c106da571353d8d48c7928c5dc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fac5ad6ec38c184fe50922ae521743d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchkchk_1_1LockedHash.html#a0fac5ad6ec38c184fe50922ae521743d">loop</a> (std::function&lt; bool(size_t bucket, _Tp &amp;tp)&gt; loopf)</td></tr>
+<tr class="memdesc:a0fac5ad6ec38c184fe50922ae521743d"><td class="mdescLeft">&#160;</td><td class="mdescRight">loop(lambda loop function) loopf 결과가 true인 경우 Node의 timestamp를 업데이트 한다.  <a href="classchkchk_1_1LockedHash.html#a0fac5ad6ec38c184fe50922ae521743d">더 자세히 ...</a><br /></td></tr>
+<tr class="separator:a0fac5ad6ec38c184fe50922ae521743d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e67fe623264ad00b1ea5cca446aee28"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchkchk_1_1LockedHash.html#a9e67fe623264ad00b1ea5cca446aee28">loop_with_delete</a> (std::function&lt; bool(size_t bucket, _Tp &amp;tp)&gt; loopf)</td></tr>
 <tr class="memdesc:a9e67fe623264ad00b1ea5cca446aee28"><td class="mdescLeft">&#160;</td><td class="mdescRight">loop_with_delete(lambda loop function) loopf 결과가 true인 경우 Node를 제거한다.  <a href="classchkchk_1_1LockedHash.html#a9e67fe623264ad00b1ea5cca446aee28">더 자세히 ...</a><br /></td></tr>
 <tr class="separator:a9e67fe623264ad00b1ea5cca446aee28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab352db99779ef0093ee407ce12a1f768"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::list&lt; _Tp &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchkchk_1_1LockedHash.html#ab352db99779ef0093ee407ce12a1f768">expire</a> ()</td></tr>
+<tr class="memdesc:ab352db99779ef0093ee407ce12a1f768"><td class="mdescLeft">&#160;</td><td class="mdescRight">expire_time 이상 업데이트 되지 않은 Node를 삭제한다. expire_time이 0일 경우, 동작하지 않음.  <a href="classchkchk_1_1LockedHash.html#ab352db99779ef0093ee407ce12a1f768">더 자세히 ...</a><br /></td></tr>
+<tr class="separator:ab352db99779ef0093ee407ce12a1f768"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private 멤버 함수</h2></td></tr>
@@ -186,6 +189,8 @@ Private 속성</h2></td></tr>
 <tr class="memitem:a022989bf0830cd4f60d24f2f4e09107f"><td class="memItemLeft" align="right" valign="top">_MakeKey&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchkchk_1_1LockedHash.html#a022989bf0830cd4f60d24f2f4e09107f">_makekey</a></td></tr>
 <tr class="memdesc:a022989bf0830cd4f60d24f2f4e09107f"><td class="mdescLeft">&#160;</td><td class="mdescRight">make key function  <a href="classchkchk_1_1LockedHash.html#a022989bf0830cd4f60d24f2f4e09107f">더 자세히 ...</a><br /></td></tr>
 <tr class="separator:a022989bf0830cd4f60d24f2f4e09107f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a904da0ddde113175e55837642d0f85aa"><td class="memItemLeft" align="right" valign="top">time_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classchkchk_1_1LockedHash.html#a904da0ddde113175e55837642d0f85aa">_expire_time</a> = 0</td></tr>
+<tr class="separator:a904da0ddde113175e55837642d0f85aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">상세한 설명</h2>
 <div class="textblock"><h3>template&lt;typename _Key, typename _Tp, typename _Hash, typename _MakeKey&gt;<br />
@@ -202,10 +207,10 @@ class chkchk::LockedHash&lt; _Key, _Tp, _Hash, _MakeKey &gt;</h3>
   </dd>
 </dl>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00028">28</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00030">30</a> 번째 라인에서 정의되었습니다.</p>
 </div><h2 class="groupheader">생성자 &amp; 소멸자 문서화</h2>
-<a id="ae06e7fefde1945cad524e6f8591a752d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae06e7fefde1945cad524e6f8591a752d">&#9670;&nbsp;</a></span>LockedHash()</h2>
+<a id="a830b04453ee4acc432f35b27749af4a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a830b04453ee4acc432f35b27749af4a1">&#9670;&nbsp;</a></span>LockedHash()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -219,8 +224,18 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
           <td class="memname"><a class="el" href="classchkchk_1_1LockedHash.html">chkchk::LockedHash</a>&lt; _Key, _Tp, _Hash, _MakeKey &gt;::<a class="el" href="classchkchk_1_1LockedHash.html">LockedHash</a> </td>
           <td>(</td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>bucket_size</em></td><td>)</td>
+          <td class="paramname"><em>bucket_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">time_t&#160;</td>
+          <td class="paramname"><em>expire_time</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -239,7 +254,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 </dl>
 <p>atomic</p>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00088">88</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00093">93</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -270,7 +285,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 
 <p>Destroy the Locked Hash object </p>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00100">100</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00107">107</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -301,7 +316,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 </table>
 </div><div class="memdoc">
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00078">78</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00083">83</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -331,7 +346,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 </table>
 </div><div class="memdoc">
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00074">74</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00079">79</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -361,7 +376,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 </table>
 </div><div class="memdoc">
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00062">62</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00067">67</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -391,7 +406,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 </table>
 </div><div class="memdoc">
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00066">66</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00071">71</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -421,7 +436,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 </table>
 </div><div class="memdoc">
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00070">70</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00075">75</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -453,12 +468,44 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 <p>element number of each bucket </p>
 <dl class="section return"><dt>반환값</dt><dd>std::vector&lt;size_t&gt; </dd></dl>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00275">275</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00267">267</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
-<a id="ae1148c106da571353d8d48c7928c5dc6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1148c106da571353d8d48c7928c5dc6">&#9670;&nbsp;</a></span>loop()</h2>
+<a id="ab352db99779ef0093ee407ce12a1f768"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab352db99779ef0093ee407ce12a1f768">&#9670;&nbsp;</a></span>expire()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;std::list&lt;_Tp&gt; &gt; <a class="el" href="classchkchk_1_1LockedHash.html">chkchk::LockedHash</a>&lt; _Key, _Tp, _Hash, _MakeKey &gt;::expire </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>expire_time 이상 업데이트 되지 않은 Node를 삭제한다. expire_time이 0일 경우, 동작하지 않음. </p>
+<dl class="section return"><dt>반환값</dt><dd>std::optional&lt;std::list&lt;_Tp&gt;&gt; 삭제된 내용이 있으면 list, 없으면 std::nullopt를 반환. </dd></dl>
+
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00392">392</a> 번째 라인에서 정의되었습니다.</p>
+
+</div>
+</div>
+<a id="a0fac5ad6ec38c184fe50922ae521743d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fac5ad6ec38c184fe50922ae521743d">&#9670;&nbsp;</a></span>loop()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -471,7 +518,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
         <tr>
           <td class="memname">void <a class="el" href="classchkchk_1_1LockedHash.html">chkchk::LockedHash</a>&lt; _Key, _Tp, _Hash, _MakeKey &gt;::loop </td>
           <td>(</td>
-          <td class="paramtype">std::function&lt; void(size_t bucket, _Tp &amp;tp)&gt;&#160;</td>
+          <td class="paramtype">std::function&lt; bool(size_t bucket, _Tp &amp;tp)&gt;&#160;</td>
           <td class="paramname"><em>loopf</em></td><td>)</td>
           <td></td>
         </tr>
@@ -483,7 +530,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 </table>
 </div><div class="memdoc">
 
-<p>loop(lambda loop function) </p>
+<p>loop(lambda loop function) loopf 결과가 true인 경우 Node의 timestamp를 업데이트 한다. </p>
 <dl class="params"><dt>매개변수</dt><dd>
   <table class="params">
     <tr><td class="paramname">loopf</td><td></td></tr>
@@ -491,7 +538,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
   </dd>
 </dl>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00348">348</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00337">337</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -529,7 +576,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
   </dd>
 </dl>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00365">365</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00357">357</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -568,7 +615,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 </dl>
 <dl class="section return"><dt>반환값</dt><dd>std::optional&lt;_Tp&gt; </dd></dl>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00131">131</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00138">138</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -618,7 +665,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 </dl>
 <dl class="section return"><dt>반환값</dt><dd>std::optional&lt;_Tp&gt; </dd></dl>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00186">186</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00181">181</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -668,7 +715,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 </dl>
 <dl class="section return"><dt>반환값</dt><dd>std::optional&lt;_Tp&gt; </dd></dl>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00174">174</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00169">169</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -725,7 +772,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 </dl>
 <dl class="section return"><dt>반환값</dt><dd>std::optional&lt;_Tp&gt; </dd></dl>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00229">229</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00220">220</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -775,7 +822,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 </dl>
 <dl class="section return"><dt>반환값</dt><dd>std::optional&lt;_Tp&gt; </dd></dl>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00213">213</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00206">206</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -825,7 +872,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 </dl>
 <dl class="section return"><dt>반환값</dt><dd>std::optional&lt;_Tp&gt; </dd></dl>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00198">198</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00193">193</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -864,7 +911,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 </dl>
 <dl class="section return"><dt>반환값</dt><dd>std::optional&lt;_Tp&gt; </dd></dl>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00151">151</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00158">158</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -903,7 +950,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 </dl>
 <dl class="section return"><dt>반환값</dt><dd>std::optional&lt;_Tp&gt; </dd></dl>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00141">141</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00148">148</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -942,7 +989,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 </dl>
 <dl class="section return"><dt>반환값</dt><dd>std::optional&lt;_Tp&gt; </dd></dl>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00315">315</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00303">303</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -981,7 +1028,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 </dl>
 <dl class="section return"><dt>반환값</dt><dd>std::optional&lt;_Tp&gt; </dd></dl>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00303">303</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00293">293</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -1020,7 +1067,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 </dl>
 <dl class="section return"><dt>반환값</dt><dd>std::optional&lt;_Tp&gt; </dd></dl>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00291">291</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00283">283</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -1052,7 +1099,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 <p>total element size </p>
 <dl class="section return"><dt>반환값</dt><dd>size_t </dd></dl>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00121">121</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00128">128</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -1081,7 +1128,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 
 <p>element number for each bucket </p>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00049">49</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00052">52</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -1109,7 +1156,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 
 <p>bucket locks </p>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00047">47</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00050">50</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -1137,7 +1184,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 
 <p>fixed bucket size </p>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00055">55</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00058">58</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -1165,7 +1212,33 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 
 <p>bucket array </p>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00051">51</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00054">54</a> 번째 라인에서 정의되었습니다.</p>
+
+</div>
+</div>
+<a id="a904da0ddde113175e55837642d0f85aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a904da0ddde113175e55837642d0f85aa">&#9670;&nbsp;</a></span>_expire_time</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">time_t <a class="el" href="classchkchk_1_1LockedHash.html">chkchk::LockedHash</a>&lt; _Key, _Tp, _Hash, _MakeKey &gt;::_expire_time = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00064">64</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -1193,7 +1266,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 
 <p>hash function </p>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00057">57</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00060">60</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -1221,7 +1294,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 
 <p>make key function </p>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00059">59</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00062">62</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>
@@ -1249,7 +1322,7 @@ template&lt;typename _Key , typename _Tp , typename _Hash , typename _MakeKey &g
 
 <p>total elements </p>
 
-<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00053">53</a> 번째 라인에서 정의되었습니다.</p>
+<p class="definition"><a class="el" href="lockedhash_8hpp_source.html">lockedhash.hpp</a> 파일의 <a class="el" href="lockedhash_8hpp_source.html#l00056">56</a> 번째 라인에서 정의되었습니다.</p>
 
 </div>
 </div>

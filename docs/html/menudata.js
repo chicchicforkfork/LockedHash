@@ -31,6 +31,7 @@ var menudata={children:[
 {text:"모두",url:"functions.html",children:[
 {text:"_",url:"functions.html#index__5F"},
 {text:"b",url:"functions.html#index_b"},
+{text:"e",url:"functions.html#index_e"},
 {text:"l",url:"functions.html#index_l"},
 {text:"n",url:"functions.html#index_n"},
 {text:"o",url:"functions.html#index_o"},

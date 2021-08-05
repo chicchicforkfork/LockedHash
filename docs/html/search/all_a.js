@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['size_26',['size',['../classLockedHash.html#a1aebc77407dbb908c2ed194735508e45',1,'LockedHash::size()'],['../lockedhash_8hpp.html#a7d4da9775305e73e4fb5b5f0edad2684',1,'size():&#160;lockedhash.hpp']]]
+  ['_7elockedhash_26',['~LockedHash',['../classchkchk_1_1LockedHash.html#a1dde23081353f176f43c37791df41f9c',1,'chkchk::LockedHash']]]
 ];
