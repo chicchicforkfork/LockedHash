@@ -237,8 +237,11 @@ public:
           interceptor(c->_tp);
           c->_timestamp = time(nullptr);
         }
-        // return std::nullopt;
-        return std::make_optional<_Tp>(c->_tp);
+        // insert 인 경우에만 return 값을 전달
+        // update 인 경우에는 return nullopt 전달
+        // insert와 update 구분?
+        return std::nullopt;
+        // return std::make_optional<_Tp>(c->_tp);
       }
       c = c->next;
     }
