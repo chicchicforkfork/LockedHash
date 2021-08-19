@@ -468,7 +468,7 @@ public:
     return expired.empty() ? std::nullopt : make_optional(expired);
   }
 
-  void showdata(std::function<bool(size_t bucket, _Tp &tp)> showdataf) {
+  void showdata(std::function<void(size_t bucket, _Tp &tp)> showdataf) {
     for (size_t i = 0; i < _bucket_size; i++) {
       if (_bucket_elements[i].load() == 0) {
         continue;
