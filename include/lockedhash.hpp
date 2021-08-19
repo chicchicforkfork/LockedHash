@@ -392,7 +392,12 @@ public:
    * @return std::optional<std::list<_Tp>> 삭제된 내용이 있으면 list, 없으면
    * std::nullopt를 반환.
    */
-  std::optional<std::list<_Tp>> expire() {
+  std::optional<std::list<_Tp>>
+  expire(std::function<bool(_Tp &tp)> expiref = nullptr) {
+    return expiref ? _expire(expiref) : _expire();
+  }
+
+  std::optional<std::list<_Tp>> _expire() {
     assert(_expire_time != 0);
     std::list<_Tp> expired;
 
@@ -429,7 +434,7 @@ public:
     return expired.empty() ? std::nullopt : make_optional(expired);
   }
 
-  std::optional<std::list<_Tp>> expire(std::function<bool(_Tp &tp)> expiref) {
+  std::optional<std::list<_Tp>> _expire(std::function<bool(_Tp &tp)> expiref) {
     std::list<_Tp> expired;
 
     for (size_t i = 0; i < _bucket_size; i++) {
