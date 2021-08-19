@@ -468,7 +468,7 @@ public:
     return expired.empty() ? std::nullopt : make_optional(expired);
   }
 
-  void monitor(std::function<bool(size_t bucket, _Tp &tp)> monitorf) {
+  void showdata(std::function<bool(size_t bucket, _Tp &tp)> showdataf) {
     for (size_t i = 0; i < _bucket_size; i++) {
       if (_bucket_elements[i].load() == 0) {
         continue;
@@ -476,7 +476,7 @@ public:
       std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(i));
       LockedHashNode *c = _buckets[i];
       while (c) {
-        monitorf(i, c->_tp);
+        showdataf(i, c->_tp);
         c = c->next;
       }
     }
