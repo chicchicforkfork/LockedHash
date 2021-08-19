@@ -24,14 +24,12 @@ int main(int argc, char **argv) {
     return false;
   });
 
-  sleep(1);
-  hash(PersonKey("P5", 5), [](Person &p) {
-    p.setData(1);
-    p.hit();
+  auto expired = hash.expire([](Person &p) {
+    if (p.empno() > 1) {
+      return true;
+    }
+    return false;
   });
-
-  sleep(2);
-  auto expired = hash.expire();
   if (expired)
     cout << "Expire nodes : " << (*expired).size() << '\n';
 

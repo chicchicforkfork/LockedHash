@@ -428,6 +428,41 @@ public:
 
     return expired.empty() ? std::nullopt : make_optional(expired);
   }
+
+  std::optional<std::list<_Tp>> expire(std::function<bool(_Tp &tp)> expiref) {
+    std::list<_Tp> expired;
+
+    for (size_t i = 0; i < _bucket_size; i++) {
+      std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(i));
+      LockedHashNode *c = _buckets[i];
+      LockedHashNode *tmp;
+
+      while (c) {
+        if (expiref(c->_tp)) {
+          tmp = c->next;
+          if (c == _buckets[i]) {
+            _buckets[i] = c->next;
+          } else {
+            c->prev->next = c->next;
+          }
+          if (c->next) {
+            c->next->prev = c->prev;
+          }
+          _size--;
+          _bucket_elements[i]--;
+
+          expired.push_back(c->_tp);
+          delete c;
+
+          c = tmp;
+        } else {
+          c = c->next;
+        }
+      }
+    }
+
+    return expired.empty() ? std::nullopt : make_optional(expired);
+  }
 };
 
 }; // namespace chkchk

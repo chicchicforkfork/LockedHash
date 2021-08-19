@@ -14,3 +14,6 @@ add_executable(insert
 add_executable(expire
     expire.cpp
 )
+add_executable(expire2
+    expire2.cpp
+)
