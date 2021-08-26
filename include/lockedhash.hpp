@@ -397,7 +397,9 @@ public:
   }
 
   std::optional<std::list<_Tp>> _expire() {
-    assert(_expire_time != 0);
+    if (_expire_time == 0) {
+      return std::nullopt;
+    }
     std::list<_Tp> expired;
 
     time_t now = time(nullptr);
