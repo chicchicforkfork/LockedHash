@@ -384,6 +384,30 @@ public:
     }
   }
 
+  void clear() {
+    for (size_t i = 0; i < _bucket_size; i++) {
+      std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(i));
+      LockedHashNode *c = _buckets[i];
+      LockedHashNode *tmp;
+      while (c) {
+        tmp = c->next;
+        if (c == _buckets[i]) {
+          _buckets[i] = c->next;
+        } else {
+          c->prev->next = c->next;
+        }
+        if (c->next) {
+          c->next->prev = c->prev;
+        }
+        _size--;
+        _bucket_elements[i]--;
+        delete c;
+
+        c = tmp;
+      }
+    }
+  }
+
   /**
    * @brief expire_time 이상 업데이트 되지 않은 Node를 삭제한다.
    * expire_time이 0일 경우, 동작하지 않음.
