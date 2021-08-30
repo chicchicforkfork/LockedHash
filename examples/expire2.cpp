@@ -24,7 +24,8 @@ int main(int argc, char **argv) {
     return false;
   });
 
-  auto expired = hash.expire([](Person &p) {
+  auto expired = hash.expire([](Person &p, void *arg) {
+    (void)arg;
     if (p.empno() > 1) {
       return true;
     }
