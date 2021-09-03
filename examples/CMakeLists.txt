@@ -31,3 +31,6 @@ add_executable(clear
 target_link_libraries(clear
   kairos
 )
+add_executable(live
+    live.cpp
+)

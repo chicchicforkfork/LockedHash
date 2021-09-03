@@ -510,6 +510,31 @@ public:
       }
     }
   }
+
+  /**
+   * @brief (life)timestamp update
+   *
+   * @param key
+   * @return true
+   * @return false
+   */
+  bool alive(_Key &key) {
+    size_t bucket = _get_bucket_index(key);
+    std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(bucket));
+
+    LockedHashNode *c = _buckets[bucket];
+    while (c) {
+      _Key k = _makekey(c->_tp);
+      if (k == key) {
+        c->_timestamp = time(nullptr);
+        return true;
+      }
+      c = c->next;
+    }
+    return false;
+  }
+
+  bool alive(_Key &&key) { return alive(key); }
 };
 
 }; // namespace chkchk
