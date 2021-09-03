@@ -415,9 +415,9 @@ public:
    * @return std::optional<std::list<_Tp>> 삭제된 내용이 있으면 list, 없으면
    * std::nullopt를 반환.
    */
-  std::optional<std::list<_Tp>> expire(                     //
-      std::function<bool(_Tp &, void *)> expiref = nullptr, //
-      void *arg = nullptr) {                                //
+  std::optional<std::list<_Tp>> expire(                                       //
+      std::function<bool(_Tp &, time_t timestamp, void *)> expiref = nullptr, //
+      void *arg = nullptr) {                                                  //
     return expiref ? _expire(expiref, arg) : _expire();
   }
 
@@ -461,7 +461,8 @@ public:
   }
 
   std::optional<std::list<_Tp>>
-  _expire(std::function<bool(_Tp &, void *)> expiref, void *arg) {
+  _expire(std::function<bool(_Tp &, time_t timestamp, void *)> expiref,
+          void *arg) {
     std::list<_Tp> expired;
 
     for (size_t i = 0; i < _bucket_size; i++) {
@@ -470,7 +471,7 @@ public:
       LockedHashNode *tmp;
 
       while (c) {
-        if (expiref(c->_tp, arg)) {
+        if (expiref(c->_tp, c->_timestamp, arg)) {
           tmp = c->next;
           if (c == _buckets[i]) {
             _buckets[i] = c->next;
