@@ -303,7 +303,7 @@ public:
    * @param key
    * @return std::optional<_Tp>
    */
-  std::optional<_Tp> rm(_Key key) {
+  std::optional<_Tp> rm(_Key key, std::function<bool(_Tp &tp)> rmf = nullptr) {
     size_t bucket = _get_bucket_index(key);
     std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(bucket));
     std::optional<_Tp> opt = std::nullopt;
@@ -320,15 +320,45 @@ public:
         if (c->next) {
           c->next->prev = c->prev;
         }
-        _size--;
-        _bucket_elements[bucket]--;
-        opt = std::make_optional<_Tp>(c->_tp);
-        delete c;
+        bool do_delete = false;
+        if (rmf) {
+          do_delete = rmf(c->_tp);
+        }
+        if (do_delete) {
+          _size--;
+          _bucket_elements[bucket]--;
+          opt = std::make_optional<_Tp>(c->_tp);
+          delete c;
+        }
         return opt;
       }
       c = c->next;
     }
     return opt;
+  }
+
+  void find(_Key key, std::function<void(_Tp &tp)> findf) {
+    size_t bucket = _get_bucket_index(key);
+    std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(bucket));
+
+    LockedHashNode *c = _buckets[bucket];
+    while (c) {
+      _Key k = _makekey(c->_tp);
+      if (k == key) {
+        findf(c->_tp);
+        return;
+      }
+      c = c->next;
+    }
+    return;
+  }
+
+  void find(_Tp &&tp, std::function<void(_Tp &tp)> findf) { //
+    return find(_makekey(tp), findf);
+  }
+
+  void find(_Tp &tp, std::function<void(_Tp &tp)> findf) { //
+    return find(_makekey(tp), findf);
   }
 
   /**

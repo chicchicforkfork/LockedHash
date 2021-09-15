@@ -34,3 +34,6 @@ target_link_libraries(clear
 add_executable(live
     live.cpp
 )
+add_executable(find
+    find.cpp
+)
