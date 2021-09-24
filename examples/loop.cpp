@@ -1,11 +1,11 @@
 #include "lockedhash.hpp"
 #include "person.hpp"
 #include <iostream>
+#include <optional>
 #include <string>
 #include <thread>
 #include <unistd.h>
 #include <vector>
-#include <optional>
 
 using namespace std;
 using namespace chkchk;
@@ -19,7 +19,8 @@ int main(int argc, char **argv) {
     hash1(Person("P" + to_string(i), i));
   }
   size_t tot = 0;
-  hash1.loop([&](size_t bucket, Person &p) { //
+  hash1.loop([&](size_t bucket, time_t timestamp, Person &p) { //
+    (void)timestamp;
     (void)bucket;
     (void)p;
     tot++;
@@ -31,9 +32,10 @@ int main(int argc, char **argv) {
   for (int i = 1; i <= 100; i++) {
     hash2(Person("P" + to_string(i), i));
   }
-  hash2.loop_with_delete([&](size_t bucket, Person &p) { //
+  hash2.loop_with_delete([&](size_t bucket, time_t timestamp, Person &p) { //
     (void)bucket;
     (void)p;
+    (void)timestamp;
     return true;
   });
   cout << "total size: " << hash2.size() << endl;
@@ -43,9 +45,10 @@ int main(int argc, char **argv) {
     hash3(Person("P" + to_string(i), i));
   }
   size_t odd = 0;
-  hash3.loop_with_delete([&](size_t bucket, Person &p) { //
+  hash3.loop_with_delete([&](size_t bucket, time_t timestamp, Person &p) { //
     (void)bucket;
     (void)p;
+    (void)timestamp;
     if (odd++ % 2 == 0) {
       return true;
     }

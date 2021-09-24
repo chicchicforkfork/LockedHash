@@ -18,8 +18,9 @@ int main(int argc, char **argv) {
   for (int i = 1; i <= 10; i++) {
     hash1(Person("P" + to_string(i), i));
   }
-  hash1.loop([&](size_t bucket, Person &p) { //
+  hash1.loop([&](size_t bucket, time_t timestamp, Person &p) { //
     (void)bucket;
+    (void)timestamp;
     cout << p.to_string() << endl;
     return false;
   });
@@ -44,8 +45,9 @@ int main(int argc, char **argv) {
   });
 
   cout << "============================\n";
-  hash1.loop([&](size_t bucket, Person &p) { //
+  hash1.loop([&](size_t bucket, time_t timestamp, Person &p) { //
     (void)bucket;
+    (void)timestamp;
     cout << p.to_string() << endl;
     return false;
   });

@@ -367,12 +367,13 @@ public:
    *
    * @param loopf
    */
-  void loop(std::function<bool(size_t bucket, _Tp &tp)> loopf) {
+  void
+  loop(std::function<bool(size_t bucket, time_t timestamp, _Tp &tp)> loopf) {
     for (size_t i = 0; i < _bucket_size; i++) {
       std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(i));
       LockedHashNode *c = _buckets[i];
       while (c) {
-        if (loopf(i, c->_tp)) {
+        if (loopf(i, c->_timestamp, c->_tp)) {
           c->_timestamp = time(nullptr);
         }
         c = c->next;
@@ -386,13 +387,14 @@ public:
    *
    * @param loopf
    */
-  void loop_with_delete(std::function<bool(size_t bucket, _Tp &tp)> loopf) {
+  void loop_with_delete(
+      std::function<bool(size_t bucket, time_t timestamp, _Tp &tp)> loopf) {
     for (size_t i = 0; i < _bucket_size; i++) {
       std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(i));
       LockedHashNode *c = _buckets[i];
       LockedHashNode *tmp;
       while (c) {
-        if (loopf(i, c->_tp)) {
+        if (loopf(i, c->_timestamp, c->_tp)) {
           tmp = c->next;
           if (c == _buckets[i]) {
             _buckets[i] = c->next;

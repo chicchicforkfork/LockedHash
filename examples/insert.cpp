@@ -18,7 +18,8 @@ int main(int argc, char **argv) {
   hash(Person("P501", 501));
   hash(Person("P502", 502));
 
-  hash.loop([](size_t bucket, Person &p) {
+  hash.loop([](size_t bucket, time_t timestamp, Person &p) {
+    (void)timestamp;
     (void)bucket;
     cout << p.to_string() << "\n";
     return false;
@@ -31,7 +32,8 @@ int main(int argc, char **argv) {
        p500,                   //
        [](Person &p) { p.setData(100); });
 
-  hash.loop([](size_t bucket, Person &p) {
+  hash.loop([](size_t bucket, time_t timestamp, Person &p) {
+    (void)timestamp;
     (void)bucket;
     cout << p.to_string() << "\n";
     return false;

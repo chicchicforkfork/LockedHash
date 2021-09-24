@@ -18,8 +18,9 @@ int main(int argc, char **argv) {
     hash(Person("P" + to_string(i), i));
   }
   cout << "[old list]\n";
-  hash.loop([](size_t bucket, Person &p) {
+  hash.loop([](size_t bucket, time_t timestamp, Person &p) {
     (void)bucket;
+    (void)timestamp;
     cout << p.to_string() << endl;
     return false;
   });
@@ -36,8 +37,9 @@ int main(int argc, char **argv) {
     cout << "Expire nodes : " << (*expired).size() << '\n';
 
   cout << "[after expire]\n";
-  hash.loop([](size_t bucket, Person &p) {
+  hash.loop([](size_t bucket, time_t timestamp, Person &p) {
     (void)bucket;
+    (void)timestamp;
     cout << p.to_string() << endl;
     return false;
   });
