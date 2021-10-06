@@ -543,6 +543,12 @@ public:
     }
   }
 
+  void showbucket(std::function<void(size_t bucket, size_t cnt)> showdataf) {
+    for (size_t i = 0; i < _bucket_size; i++) {
+      showdataf(i, _bucket_elements[i].load());
+    }
+  }
+
   /**
    * @brief (life)timestamp update
    *
