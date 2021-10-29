@@ -320,7 +320,7 @@ public:
         if (c->next) {
           c->next->prev = c->prev;
         }
-        bool do_delete = false;
+        bool do_delete = true;
         if (rmf) {
           do_delete = rmf(c->_tp);
         }
