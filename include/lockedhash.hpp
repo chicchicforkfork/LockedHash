@@ -556,7 +556,8 @@ public:
    * @return true
    * @return false
    */
-  bool alive(_Key &key) {
+  std::optional<_Tp> //
+  alive(_Key &key) {
     size_t bucket = _get_bucket_index(key);
     std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(bucket));
 
@@ -565,14 +566,17 @@ public:
       _Key k = _makekey(c->_tp);
       if (k == key) {
         c->_timestamp = time(nullptr);
-        return true;
+        return std::make_optional<_Tp>(c->_tp);
       }
       c = c->next;
     }
-    return false;
+    return std::nullopt;
   }
 
-  bool alive(_Key &&key) { return alive(key); }
+  std::optional<_Tp> //
+  alive(_Key &&key) {
+    return alive(key);
+  }
 };
 
 }; // namespace chkchk
