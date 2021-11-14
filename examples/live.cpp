@@ -23,11 +23,11 @@ int main(int argc, char **argv) {
   std::this_thread::sleep_for(3s);
 
   auto p50alive = hash.alive(PersonKey("P50", 50));
-  cout << "P50 alive? " << p50alive << endl;
+  cout << "P50 alive? " << p50alive->to_string() << endl;
 
   auto p20key = PersonKey("P20", 20);
   auto p20alive = hash.alive(p20key);
-  cout << "P20 alive? " << p20alive << endl;
+  cout << "P20 alive? " << p20alive->to_string() << endl;
 
   std::this_thread::sleep_for(3s);
   {

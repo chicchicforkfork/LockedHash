@@ -8,7 +8,7 @@
 #include <iostream>
 #include <list>
 #include <mutex>
-#include <optional>
+#include <optional.hpp>
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -94,7 +94,8 @@ public:
                                          time_t expire_time) {
     _bucket_size = bucket_size;
     _bucket_locks = new std::recursive_mutex[_bucket_size];
-    _bucket_elements = new std::atomic<size_t>[_bucket_size] { (size_t)0, };
+    _bucket_elements =
+        new std::atomic<size_t>[_bucket_size] { ATOMIC_VAR_INIT(0) };
     _buckets = new LockedHashNode *[_bucket_size] { nullptr, };
     _size = 0; /// atomic
     _expire_time = expire_time;
@@ -133,19 +134,19 @@ public:
    * @brief search data (lvalue)
    *
    * @param key
-   * @return std::optional<_Tp>
+   * @return tl::optional<_Tp>
    */
-  std::optional<_Tp> operator()(_Key key) {
-    return operator()(key, std::nullopt);
+  tl::optional<_Tp> operator()(_Key key) {
+    return operator()(key, tl::nullopt);
   }
 
   /**
    * @brief search data (lvalue)
    *
    * @param key
-   * @return std::optional<_Tp>
+   * @return tl::optional<_Tp>
    */
-  std::optional<_Tp> operator[](_Key &key) { //
+  tl::optional<_Tp> operator[](_Key &key) { //
     return operator[](std::move(key));
   }
 
@@ -153,9 +154,9 @@ public:
    * @brief search data (rvalue)
    *
    * @param key
-   * @return std::optional<_Tp>
+   * @return tl::optional<_Tp>
    */
-  std::optional<_Tp> operator[](_Key &&key) { //
+  tl::optional<_Tp> operator[](_Key &&key) { //
     return operator()(key);
   }
 
@@ -164,10 +165,10 @@ public:
    *
    * @param key
    * @param interceptor
-   * @return std::optional<_Tp>
+   * @return tl::optional<_Tp>
    */
-  std::optional<_Tp> operator()(_Key key, //
-                                std::function<void(_Tp &)> interceptor) {
+  tl::optional<_Tp> operator()(_Key key, //
+                               std::function<void(_Tp &)> interceptor) {
     return operator()(key, operator[](key), interceptor);
   }
 
@@ -176,10 +177,10 @@ public:
    *
    * @param key
    * @param tp
-   * @return std::optional<_Tp>
+   * @return tl::optional<_Tp>
    */
-  std::optional<_Tp> operator()(_Key key, _Tp &tp) {
-    return operator()(key, std::make_optional<_Tp>(tp));
+  tl::optional<_Tp> operator()(_Key key, _Tp &tp) {
+    return operator()(key, tl::make_optional<_Tp>(tp));
   }
 
   /**
@@ -187,12 +188,12 @@ public:
    *
    * @param tp
    * @param interceptor
-   * @return std::optional<_Tp>
+   * @return tl::optional<_Tp>
    */
-  std::optional<_Tp>
+  tl::optional<_Tp>
   operator()(_Tp &tp, //
              std::function<void(_Tp &)> interceptor = nullptr) {
-    return operator()(_makekey(tp), std::make_optional<_Tp>(tp), interceptor);
+    return operator()(_makekey(tp), tl::make_optional<_Tp>(tp), interceptor);
   }
 
   /**
@@ -200,12 +201,12 @@ public:
    *
    * @param tp
    * @param interceptor
-   * @return std::optional<_Tp>
+   * @return tl::optional<_Tp>
    */
-  std::optional<_Tp>
+  tl::optional<_Tp>
   operator()(_Tp &&tp, //
              std::function<void(_Tp &)> interceptor = nullptr) {
-    return operator()(_makekey(tp), std::make_optional<_Tp>(tp), interceptor);
+    return operator()(_makekey(tp), tl::make_optional<_Tp>(tp), interceptor);
   }
 
   /**
@@ -214,11 +215,11 @@ public:
    * @param key
    * @param tp
    * @param interceptor
-   * @return std::optional<_Tp>
+   * @return tl::optional<_Tp>
    */
-  std::optional<_Tp>
-  operator()(_Key key,              //
-             std::optional<_Tp> tp, //
+  tl::optional<_Tp>
+  operator()(_Key key,             //
+             tl::optional<_Tp> tp, //
              std::function<void(_Tp &)> interceptor = nullptr) {
     bool is_insert = tp.has_value();
     size_t bucket = _get_bucket_index(key);
@@ -230,7 +231,7 @@ public:
       if (k == key) {
         if (!is_insert) {
           // only search
-          return std::make_optional<_Tp>(c->_tp);
+          return tl::make_optional<_Tp>(c->_tp);
         }
         if (interceptor) {
           // update data
@@ -240,13 +241,13 @@ public:
         // insert 인 경우에만 return 값을 전달
         // update 인 경우에는 return nullopt 전달
         // insert와 update 구분?
-        return std::nullopt;
-        // return std::make_optional<_Tp>(c->_tp);
+        return tl::nullopt;
+        // return tl::make_optional<_Tp>(c->_tp);
       }
       c = c->next;
     }
     if (!is_insert) {
-      return std::nullopt;
+      return tl::nullopt;
     }
 
     c = new LockedHashNode(*tp);
@@ -259,7 +260,7 @@ public:
     _bucket_elements[bucket]++;
     _size++;
 
-    return std::make_optional<_Tp>(c->_tp);
+    return tl::make_optional<_Tp>(c->_tp);
   }
 
   /**
@@ -281,9 +282,9 @@ public:
    * @brief rm(tp) - remove Lvalue
    *
    * @param tp
-   * @return std::optional<_Tp>
+   * @return tl::optional<_Tp>
    */
-  std::optional<_Tp> rm(_Tp &tp) { //
+  tl::optional<_Tp> rm(_Tp &tp) { //
     return rm(_makekey(tp));
   }
 
@@ -291,9 +292,9 @@ public:
    * @brief remove data for Rvalue
    *
    * @param tp
-   * @return std::optional<_Tp>
+   * @return tl::optional<_Tp>
    */
-  std::optional<_Tp> rm(_Tp &&tp) { //
+  tl::optional<_Tp> rm(_Tp &&tp) { //
     return rm(_makekey(tp));
   }
 
@@ -301,12 +302,12 @@ public:
    * @brief remove data for
    *
    * @param key
-   * @return std::optional<_Tp>
+   * @return tl::optional<_Tp>
    */
-  std::optional<_Tp> rm(_Key key, std::function<bool(_Tp &tp)> rmf = nullptr) {
+  tl::optional<_Tp> rm(_Key key, std::function<bool(_Tp &tp)> rmf = nullptr) {
     size_t bucket = _get_bucket_index(key);
     std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(bucket));
-    std::optional<_Tp> opt = std::nullopt;
+    tl::optional<_Tp> opt = tl::nullopt;
 
     LockedHashNode *c = _buckets[bucket];
     while (c) {
@@ -327,7 +328,7 @@ public:
         if (do_delete) {
           _size--;
           _bucket_elements[bucket]--;
-          opt = std::make_optional<_Tp>(c->_tp);
+          opt = tl::make_optional<_Tp>(c->_tp);
           delete c;
         }
         return opt;
@@ -444,18 +445,18 @@ public:
    * @brief expire_time 이상 업데이트 되지 않은 Node를 삭제한다.
    * expire_time이 0일 경우, 동작하지 않음.
    *
-   * @return std::optional<std::list<_Tp>> 삭제된 내용이 있으면 list, 없으면
-   * std::nullopt를 반환.
+   * @return tl::optional<std::list<_Tp>> 삭제된 내용이 있으면 list, 없으면
+   * tl::nullopt를 반환.
    */
-  std::optional<std::list<_Tp>> expire(                                       //
+  tl::optional<std::list<_Tp>> expire(                                        //
       std::function<bool(_Tp &, time_t timestamp, void *)> expiref = nullptr, //
       void *arg = nullptr) {                                                  //
     return expiref ? _expire(expiref, arg) : _expire();
   }
 
-  std::optional<std::list<_Tp>> _expire() {
+  tl::optional<std::list<_Tp>> _expire() {
     if (_expire_time == 0) {
-      return std::nullopt;
+      return tl::nullopt;
     }
     std::list<_Tp> expired;
 
@@ -489,10 +490,10 @@ public:
       }
     }
 
-    return expired.empty() ? std::nullopt : make_optional(expired);
+    return expired.empty() ? tl::nullopt : tl::make_optional(expired);
   }
 
-  std::optional<std::list<_Tp>>
+  tl::optional<std::list<_Tp>>
   _expire(std::function<bool(_Tp &, time_t timestamp, void *)> expiref,
           void *arg) {
     std::list<_Tp> expired;
@@ -526,7 +527,7 @@ public:
       }
     }
 
-    return expired.empty() ? std::nullopt : make_optional(expired);
+    return expired.empty() ? tl::nullopt : tl::make_optional(expired);
   }
 
   void showdata(std::function<void(size_t bucket, _Tp &tp)> showdataf) {
@@ -556,7 +557,7 @@ public:
    * @return true
    * @return false
    */
-  std::optional<_Tp> //
+  tl::optional<_Tp> //
   alive(_Key &key) {
     size_t bucket = _get_bucket_index(key);
     std::lock_guard<std::recursive_mutex> guard(_get_bucket_lock(bucket));
@@ -566,14 +567,14 @@ public:
       _Key k = _makekey(c->_tp);
       if (k == key) {
         c->_timestamp = time(nullptr);
-        return std::make_optional<_Tp>(c->_tp);
+        return tl::make_optional<_Tp>(c->_tp);
       }
       c = c->next;
     }
-    return std::nullopt;
+    return tl::nullopt;
   }
 
-  std::optional<_Tp> //
+  tl::optional<_Tp> //
   alive(_Key &&key) {
     return alive(key);
   }

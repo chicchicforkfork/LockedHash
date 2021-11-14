@@ -5,7 +5,7 @@ project(lockedhash)
 
 cmake_minimum_required(VERSION 3.16)
 set(CMAKE_CXX_COMPILER /usr/bin/c++)
-set(CMAKE_CXX_FLAGS "-m64 -std=c++17")
+set(CMAKE_CXX_FLAGS "-m64 -std=c++14")
 add_compile_options(-W -Wall -g)
 
 include_directories(include)
@@ -47,5 +47,5 @@ INTERFACE
 #     add_subdirectory(test)
 # endif()
 
-# add_subdirectory(examples)
+ add_subdirectory(examples)
 
