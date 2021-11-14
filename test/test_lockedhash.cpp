@@ -7,7 +7,6 @@
 #include <vector>
 
 using namespace std;
-using namespace chkchk;
 
 class TestClass {
 public:

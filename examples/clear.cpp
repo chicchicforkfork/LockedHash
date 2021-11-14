@@ -9,7 +9,6 @@
 #include <vector>
 
 using namespace std;
-using namespace chkchk;
 
 int main(int argc, char **argv) {
   (void)argc;

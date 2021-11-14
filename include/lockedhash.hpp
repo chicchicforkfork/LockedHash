@@ -16,8 +16,6 @@
 #include <time.h>
 #include <vector>
 
-namespace chkchk {
-
 /**
  * @brief LockedHash
  *
@@ -579,7 +577,5 @@ public:
     return alive(key);
   }
 };
-
-}; // namespace chkchk
 
 #endif
