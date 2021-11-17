@@ -103,7 +103,7 @@ public:
    * @brief Destroy the Locked Hash object
    *
    */
-  ~LockedHash() {
+  virtual ~LockedHash() {
     delete[] _bucket_locks;
     delete[] _bucket_elements;
 
